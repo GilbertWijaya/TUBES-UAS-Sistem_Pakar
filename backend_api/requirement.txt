@@ -1,0 +1,6 @@
+Flask>=2.3
+Flask-Login
+Flask-Migrate
+Flask-SQLAlchemy
+python-dotenv
+Werkzeug
