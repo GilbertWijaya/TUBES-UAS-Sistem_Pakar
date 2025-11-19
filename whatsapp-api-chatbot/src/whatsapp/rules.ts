@@ -9,78 +9,89 @@ export const rules: Record<string, Rule> = {
       '😁 Halo, Yarkham Gallery di sini, Silahkan pilih menu 🙏:\n1. Katalog\n2. Bantuan\n3. Rekomendasi\n4. Cek Promo',
     next: ['1', '2', '3', '4'],
   },
+
   '1': {
     message:
-      '📦 Katalog kami:\n- 1A. Sofa & Kursi\n- 1B. Dekorasi Meja\n- 1C. Dekorasi Lantai\n- 1D. Set Perlengkapan',
+      '📦 Katalog kami:\n- 1A. Sofa & Kursi\n- 1B. Dekorasi\n- 1C. Set Perlengkapan',
     next: ['1A', '1B', '1C', '1D'],
   },
+
   '1A': {
-    message: '🛋️ Sofa dan Kursi:\n1A1. Rangka Rotan\n1A2. Rangka Besi',
+    message: '🛋️ Sofa dan Kursi:\n1A1. Rangka Rotan Sintetis\n1A2. Rangka Besi',
     next: ['1A1', '1A2'],
   },
   '1A1': {
-    message: '🛋️ Sofa dan Kursi:\n1A1A. Bundle\n1A2A. Non-Bundle',
-    next: ['1A1A', '1A2A'],
+    message: '🛋️ Sofa dan Kursi:\n1A1A. Menggantung\n1A1B. Berdiri',
+    next: ['1A1A', '1A1B'],
   },
   '1A2': {
-    message: '🛋️ Sofa dan Kursi:\n1A1A. Bundle\n1A2A. Non-Bundle',
-    next: ['1A1A', '1A2A'],
+    message: '🛋️ Sofa dan Kursi:\n1A2A. Menggantung\n1A2B. Berdiri',
+    next: ['1A2A', '1A2B'],
   },
 
   '1B': {
-    message: '🪞 Dekorasi Meja:\n1B1. Kecil\n1B2. Besar',
+    message: '🪞 Dekorasi:\n1B1. Bundling\n1B2. Non-Bundling',
     next: ['1B1', '1B2'],
   },
   '1B1': {
-    message: '🪞 Dekorasi Meja Kecil:\n1B1A. Bundle\n1B1B. Non-Bundle',
+    message: '🪞 Dekorasi:\n1B1A. Latex\n1B1B. Plastik',
     next: ['1B1A', '1B1B'],
   },
   '1B2': {
-    message: '🪞 Dekorasi Meja Besar:\n1B2A. Bundle\n1B2B. Non-Bundle',
+    message: '🪞 Dekorasi:\n1B2A. Fungsional\n1B2B. Non-Fungsional',
     next: ['1B2A', '1B2B'],
   },
   '1B2A': {
-    message: '📏 Ukuran Meja:\n1B2A1. 120×80\n1B2A2. Ukuran Lain',
+    message: '📏 Dekorasi: \n1B2A1. Besar\n1B2A2. Kecil',
     next: ['1B2A1', '1B2A2'],
+  },
+  '1B2B': {
+    message: '📏 Dekorasi: \n1B2B1. Besar\n1B2B2. Kecil',
+    next: ['1B2B1', '1B2B2'],
   },
 
   '1C': {
-    message: '🏠 Dekorasi Lantai:\n1C1. Fungsional\n1C2. Hiasan',
-    next: ['1C1', '1C2'],
+    message: '🏠 Perlengkapan:\n1C1. Dapur\n1C2. Makan&Minum\n1C3. Lain-Lain',
+    next: ['1C1', '1C2', '1C3'],
   },
+
   '1C1': {
-    message: '🏠 Dekorasi Lantai Fungsional:\n1C1A. Bundle\n1C1B. Non-Bundle',
+    message: '🏠 Perlengkapan:\n1C1A. Bundling\n1C1B. Non-Bundling',
     next: ['1C1A', '1C1B'],
   },
-
-  '1D': {
-    message:
-      '🧰 Set Perlengkapan:\n1D1. Kitchen\n1D2. Meja\n1D3. Buffet\n1D4. Kursi',
-    next: ['1D1', '1D2', '1D3', '1D4'],
+  '1C1A': {
+    message: '🏠 Perlengkapan:\n1C1A1. Kokoh\n1C1A2. Besar',
+    next: ['1C1A1', '1C1A2'],
   },
-  '1D1': {
-    message: '🧰 Set Perlengkapan:\n1D1A. Bundling \n1D2A. Non-Bundling',
-    next: ['1D1A', '1D2A'],
+  '1C1B': {
+    message: '🏠 Perlengkapan:\n1C1B1. Kokoh\n1C1B2. Besar',
+    next: ['1C1B1', '1C1B2'],
   },
 
-  '1D2': {
-    message: '🧰 Set Perlengkapan:\n1D1. Bundling \n1D2. Non-Bundling',
-    next: ['1D1A', '1D2A'],
+  '1C2': {
+    message: '🏠 Perlengkapan:\n1C2. Bundling\n1C2. Non-Bundling',
+    next: ['1C2A', '1C2B'],
+  },
+  '1C2A': {
+    message: '🏠 Perlengkapan:\n1C2A1. Fungsional\n1C2A2. Hiasan',
+    next: ['1C2A1', '1C2A2'],
+  },
+  '1C2B': {
+    message: '🏠 Perlengkapan:\n1C2B1. Fungsional\n1C2B2. Hiasan',
+    next: ['1C2B1', '1C2B2'],
   },
 
-  '1D1A': {
-    message: '🧰 Set Perlengkapan:\n1D1A1. Fungsional \n1D2A2. Hiasan',
-    next: ['1D1A1', '1D2A2'],
+  '1C3': {
+    message: '🏠 Perlengkapan:\n1C3A. Bundling\n1C3B. Non-Bundling',
+    next: ['1C3A', '1C3B'],
   },
-
-  '1D4': {
-    message: '🧰 Set Perlengkapan:\n1D4A. Fungsional \n1D4B. Hiasan',
-    next: ['1D4A', '1D4B'],
+  '1C3A': {
+    message: '🏠 Perlengkapan:\n1C3A1. Fungsional\n1C3A2. Non-Fungsional',
+    next: ['1C3A1', '1C3A2'],
   },
-
-  '1D4B': {
-    message: '🧰 Set Perlengkapan:\n1D4B1. Bundling \n1D4B2. Non-Bundling',
-    next: ['1D4B1', '1D4B2'],
+  '1C3B': {
+    message: '🏠 Perlengkapan:\n1C3B1. Fungsional\n1C3B2. Non-Fungsional',
+    next: ['1C3B1', '1C3B2'],
   },
 
   '2': {
