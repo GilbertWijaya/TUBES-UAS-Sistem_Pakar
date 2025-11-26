@@ -1,6 +1,7 @@
 export interface Rule {
-  message: string;
-  next: string[];
+  message?: string;
+  next?: string[];
+  isFinal?: boolean;
 }
 
 export const rules: Record<string, Rule> = {
@@ -13,7 +14,7 @@ export const rules: Record<string, Rule> = {
   '1': {
     message:
       '📦 Katalog kami:\n- 1A. Sofa & Kursi\n- 1B. Dekorasi\n- 1C. Set Perlengkapan',
-    next: ['1A', '1B', '1C', '1D'],
+    next: ['1A', '1B', '1C'],
   },
 
   '1A': {
@@ -24,9 +25,25 @@ export const rules: Record<string, Rule> = {
     message: '🛋️ Sofa dan Kursi:\n1A1A. Menggantung\n1A1B. Berdiri',
     next: ['1A1A', '1A1B'],
   },
+  '1A1A': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1A1B': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
   '1A2': {
     message: '🛋️ Sofa dan Kursi:\n1A2A. Menggantung\n1A2B. Berdiri',
     next: ['1A2A', '1A2B'],
+  },
+  '1A2A': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1A2B': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
   },
 
   '1B': {
@@ -37,6 +54,14 @@ export const rules: Record<string, Rule> = {
     message: '🪞 Dekorasi:\n1B1A. Latex\n1B1B. Plastik',
     next: ['1B1A', '1B1B'],
   },
+  '1B1A': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1B1B': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
   '1B2': {
     message: '🪞 Dekorasi:\n1B2A. Fungsional\n1B2B. Non-Fungsional',
     next: ['1B2A', '1B2B'],
@@ -45,9 +70,25 @@ export const rules: Record<string, Rule> = {
     message: '📏 Dekorasi: \n1B2A1. Besar\n1B2A2. Kecil',
     next: ['1B2A1', '1B2A2'],
   },
+  '1B2A1': {
+    message: 'Hasilnya Adalah',
+    isFinal: true,
+  },
+  '1B2A2': {
+    message: 'Hasilnya Adalah',
+    isFinal: true,
+  },
   '1B2B': {
     message: '📏 Dekorasi: \n1B2B1. Besar\n1B2B2. Kecil',
     next: ['1B2B1', '1B2B2'],
+  },
+  '1B2B1': {
+    message: 'Hasilnya Adalah',
+    isFinal: true,
+  },
+  '1B2B2': {
+    message: 'Hasilnya Adalah',
+    isFinal: true,
   },
 
   '1C': {
@@ -63,9 +104,26 @@ export const rules: Record<string, Rule> = {
     message: '🏠 Perlengkapan:\n1C1A1. Kokoh\n1C1A2. Besar',
     next: ['1C1A1', '1C1A2'],
   },
+  '1C1A1': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1C1A2': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
   '1C1B': {
     message: '🏠 Perlengkapan:\n1C1B1. Kokoh\n1C1B2. Besar',
     next: ['1C1B1', '1C1B2'],
+    isFinal: true,
+  },
+  '1C1B1': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1C1B2': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
   },
 
   '1C2': {
@@ -76,9 +134,26 @@ export const rules: Record<string, Rule> = {
     message: '🏠 Perlengkapan:\n1C2A1. Fungsional\n1C2A2. Hiasan',
     next: ['1C2A1', '1C2A2'],
   },
+  '1C2A1': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1C2A2': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
   '1C2B': {
     message: '🏠 Perlengkapan:\n1C2B1. Fungsional\n1C2B2. Hiasan',
     next: ['1C2B1', '1C2B2'],
+    isFinal: true,
+  },
+  '1C2B1': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1C2B2': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
   },
 
   '1C3': {
@@ -89,9 +164,25 @@ export const rules: Record<string, Rule> = {
     message: '🏠 Perlengkapan:\n1C3A1. Fungsional\n1C3A2. Non-Fungsional',
     next: ['1C3A1', '1C3A2'],
   },
+  '1C3A1': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1C3A2': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
   '1C3B': {
     message: '🏠 Perlengkapan:\n1C3B1. Fungsional\n1C3B2. Non-Fungsional',
     next: ['1C3B1', '1C3B2'],
+  },
+  '1C3B1': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
+  },
+  '1C3B2': {
+    message: 'Hasilnya adalah',
+    isFinal: true,
   },
 
   '2': {
@@ -99,14 +190,44 @@ export const rules: Record<string, Rule> = {
       '🆘 Bantuan:\n2A. Hubungi admin di wa.me/628xxxxxx\n2B. 📍Keterangan dan Lokasi',
     next: ['2A', '2B'],
   },
+  '2A': {
+    message: 'Anda dapat menghubungi admin kami di wa.me/628xxxxxx',
+    isFinal: true,
+  },
+  '2B': {
+    message:
+      'Yarkham Gallery berlokasi di Jl. Contoh No.123, Kota Contoh. Jam operasional: Senin - Sabtu, 09.00 - 18.00 WIB.',
+    isFinal: true,
+  },
   '3': {
     message:
       '💡 Kirimkan preferensi produk, dan kami akan memberikan rekomendasi produk yang sesuai dengan kebutuhan Anda! 😊',
     next: [],
+    isFinal: true,
   },
   '4': {
     message:
       '💸 Promo saat ini:\n4A. Potongan Harga\n4B. Gratis Ongkir\n4C. Cashback 10%\n4D. Buy 1 Get 1\n(S&K berlaku, hubungi admin)',
     next: ['4A', '4B', '4C', '4D'],
+  },
+  '4A': {
+    message:
+      'Dapatkan potongan harga hingga 20% untuk pembelian produk tertentu! Hubungi admin untuk info lebih lanjut.',
+    isFinal: true,
+  },
+  '4B': {
+    message:
+      'Nikmati gratis ongkir untuk pembelian di atas Rp500.000! Hubungi admin untuk info lebih lanjut.',
+    isFinal: true,
+  },
+  '4C': {
+    message:
+      'Dapatkan cashback 10% untuk setiap pembelian produk tertentu! Hubungi admin untuk info lebih lanjut.',
+    isFinal: true,
+  },
+  '4D': {
+    message:
+      'Promo Buy 1 Get 1 untuk produk pilihan! Hubungi admin untuk info lebih lanjut.',
+    isFinal: true,
   },
 };
