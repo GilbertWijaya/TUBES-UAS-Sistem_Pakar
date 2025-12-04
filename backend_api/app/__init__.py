@@ -5,6 +5,7 @@ import os
 from .config import Config 
 from .extensions import db, migrate
 from .api.routes import api_bp
+from .rules_api.routes import rule_api_bp
 
 def create_app():
     # create and configure the app
@@ -28,6 +29,7 @@ def create_app():
 
     # blueprints
     app.register_blueprint(api_bp, url_prefix="/api")
+    app.register_blueprint(rule_api_bp, url_prefix="/api")
 
     @app.route("/")
     def index():

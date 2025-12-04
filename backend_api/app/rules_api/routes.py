@@ -1,12 +1,12 @@
 from flask import request, jsonify
-from ..models import Data
+from ..models import Rules
 from ..extensions import db
-from . import api_bp
+from . import rule_api_bp
 
 # get all data
-@api_bp.route("/data", methods=['GET'])
+@rule_api_bp.route("/rule", methods=['GET'])
 def getalldata():
-    data = Data.query.all()
+    data = Rules.query.all()
     result = [
         {
             "id": d.id,
@@ -20,71 +20,8 @@ def getalldata():
     ]
     return jsonify(result), 200
 
-# post 2 get data by rule
-# @api_bp.route("/data/rule", methods=['POST'])
-# def post2getdata():
-    data = request.json or {}
-    goal = data.get("goal")
-    rule1 = data.get("rule1")
-    rule2 = data.get("rule2")
-    rule3 = data.get("rule3")
-    if not all([goal, rule1, rule2, rule3]):
-        return jsonify({"error": "All fields are required"}), 400
-    data = Data.query.filter_by(Goal=goal).all()
-    goals = []
-    for d in data:
-        if d.Rule_1 == rule1 and d.Rule_2 == rule2 and d.Rule_3 == rule3:
-            goals.append({
-                "Goal": d.Goal,
-                "Rule_1": d.Rule_1,
-                "Rule_2": d.Rule_2,
-                "Rule_3": d.Rule_3,
-                "Value" : d.Value
-            })
-    return jsonify({"result": goals}), 200
-
-@api_bp.route("/data/rule", methods=['POST'])
-def post2getdata():
-    data = request.json or {}
-
-    # Ambil input dan sanitasi (trim + lowercase)
-    goal = (data.get("goal") or "").strip().lower()
-    rule1 = (data.get("rule1") or "").strip().lower()
-    rule2 = (data.get("rule2") or "").strip().lower()
-    rule3 = (data.get("rule3") or "").strip().lower()
-
-    # Validasi input
-    if not all([goal, rule1, rule2, rule3]):
-        return jsonify({"error": "All fields are required"}), 400
-
-    # Query berdasarkan goal case-insensitive
-    data_rows = Data.query.filter(Data.Goal.ilike(goal)).all()
-
-    results = []
-
-    for row in data_rows:
-        # Bandingkan rule secara fleksibel (case-insensitive)
-        if (
-            (row.Rule_1 or "").strip().lower() == rule1 and
-            (row.Rule_2 or "").strip().lower() == rule2 and
-            (row.Rule_3 or "").strip().lower() == rule3
-        ):
-            results.append({
-                "Goal": row.Goal,
-                "Rule_1": row.Rule_1,
-                "Rule_2": row.Rule_2,
-                "Rule_3": row.Rule_3,
-                "Value": row.Value
-            })
-
-    if not results:
-        return jsonify({"message": "No matching product found"}), 404
-
-    return jsonify({"result": results}), 200
-
-
 # get data by rule
-@api_bp.route("/data/rules", methods=['GET'])
+@rule_api_bp.route("/rule/rules", methods=['GET'])
 def getdatabyrule():
     goal = request.args.get("goal")
     rule1 = request.args.get("rule1")
@@ -94,7 +31,7 @@ def getdatabyrule():
     if not all([goal, rule1, rule2, rule3]):
         return jsonify({"error": "All fields are required"}), 400
 
-    data = Data.query.filter_by(Goal=goal).all()
+    data = Rules.query.filter_by(Goal=goal).all()
     goals = []
 
     for d in data:
@@ -111,7 +48,7 @@ def getdatabyrule():
 # contoh endpointnya: http://127.0.0.1:5000/api/data/rules?goal=Dekorasi&rule1=Plastik/Pvc&rule2=Non-Bundling&rule3=Besar
 
 #create data
-@api_bp.route("/data", methods=['POST'])
+@rule_api_bp.route("/rule", methods=['POST'])
 def createdata():
     datareq = request.json or {}
 
@@ -124,7 +61,7 @@ def createdata():
     if not all([goal, rule1, rule2, rule3, value]):
         return jsonify({"error": "All fields are required"}), 400
 
-    data = Data(Goal=goal, Rule_1=rule1, Rule_2=rule2, Rule_3=rule3, Value=value)
+    data = Rules(Goal=goal, Rule_1=rule1, Rule_2=rule2, Rule_3=rule3, Value=value)
     
     try:
         db.session.add(data)
@@ -145,10 +82,10 @@ def createdata():
         return jsonify({"error": str(e)}), 500
 
 # del data
-@api_bp.route("/data/<int:id>", methods=['DELETE'])
+@rule_api_bp.route("/rule/<int:id>", methods=['DELETE'])
 def delete_data(id):
     # Cari data berdasarkan ID
-    data = Data.query.get(id)
+    data = Rules.query.get(id)
     
     # Jika data tidak ditemukan
     if not data:

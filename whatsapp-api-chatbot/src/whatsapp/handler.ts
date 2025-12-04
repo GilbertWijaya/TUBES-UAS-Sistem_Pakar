@@ -166,14 +166,11 @@ export async function handleMessage(client: any, from: string, text?: string) {
     console.log(session.history[1]);
 
     try {
-      const response = await axios.post(
-        'http://localhost:3000/api/free-input',
-        {
-          user_id: from,
-          input: userResponse,
-          history: session.history,
-        },
-      );
+      const response = await axios.post('http://127.0.0.1:5000/api/data/rule', {
+        // user_id: from,
+        // input: userResponse,
+        history: session.history,
+      });
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const result =
@@ -226,10 +223,12 @@ export async function handleMessage(client: any, from: string, text?: string) {
 
   console.log(`📌 HISTORY (${from}):`, session.history);
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-  await client.sendMessage(from, { text: rule.message });
+  await client.sendMessage(from, {
+    text: rule.message ?? 'pilihan anda diproses',
+  });
 
   // ========= Jika user memilih ROOT 3 → aktifkan input bebas =========
-  if (matchedKey === '3') {
+  if (matchedKey.toLowerCase() === 'Rekomendasi'.toLowerCase()) {
     session.expectingInputForRoot3 = true;
     return; // stop — tidak lanjut final check
   }
@@ -247,26 +246,100 @@ export async function handleMessage(client: any, from: string, text?: string) {
 
   try {
     // hanya root 1 yg di kirim ke API ini
-    if (session.history[0] === '1') {
+    if (session.history[0].toLowerCase() === 'katalog') {
+      console.log(session.history);
+
+      // const formattedData: Record<string, string> = {
+      //   goal: session.history[1] || '',
+      //   // user_id: from,
+      // };
+
+      // ambil semua pilihan setelah 'Katalog'
+      const remainder = session.history.slice(1); // ['Karpet','Wol','Motif','Sedang']
+
+      // session.history.slice(1, 4).forEach((value, index) => {
+      //   formattedData[`rule${index + 1}`] = value.toLowerCase();
+      // });
+
+      // siapkan payload dengan default ''
+      const formattedData: Record<string, string> = {
+        goal: remainder[0]?.toLowerCase() || '',
+        rule1: remainder[1]?.toLowerCase() || '',
+        rule2: remainder[2]?.toLowerCase() || '',
+        rule3: remainder[3]?.toLowerCase() || '',
+      };
+
+      // Jika kamu mau, bisa trim spasi juga:
+      Object.keys(formattedData).forEach((k) => {
+        formattedData[k] = (formattedData[k] || '').trim();
+      });
+
+      console.log('📦 Data terkirim:', formattedData);
+
+      // const response = await axios.post('http://127.0.0.1:5000/api/data/rule', {
+      //   // user_id: from,
+      //   // selections: session.history,
+      //   formattedData,
+      // });
       const response = await axios.post(
-        'http://localhost:3000/api/get-product',
+        'http://127.0.0.1:5000/api/data/rule',
+        formattedData,
         {
-          user_id: from,
-          selections: session.history,
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const result =
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        response.data?.result ||
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        response.data?.message ||
-        '⚠️ Tidak ditemukan hasil dari jawaban Anda.';
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      await client.sendMessage(from, {
-        text: `📦 *Hasil Analisa Anda*:\n\n${result}\n\n👉 Ketik *menu* untuk memulai kembali.`,
-      });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      console.log(response.data.result);
+
+      // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      // const result =
+      //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      //   response.data?.result ||
+      //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      //   response.data?.message ||
+      //   '⚠️ Tidak ditemukan hasil dari jawaban Anda.';
+      // // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      // await client.sendMessage(from, {
+      //   text: `📦 *Hasil Analisa Anda*:\n\n${result}\n\n👉 Ketik *menu* untuk memulai kembali.`,
+      // });
+
+      // Ambil hasil dari API
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const apiResult = response.data?.result;
+
+      // Jika tidak ada hasil
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (!apiResult || apiResult.length === 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        await client.sendMessage(from, {
+          text: `⚠️ Tidak ditemukan hasil dari pilihan Anda.\n👉 Ketik *menu* untuk memulai kembali.`,
+        });
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        const item = apiResult[0]; // Ambil record pertama
+
+        // Format output lebih rapi
+        const formattedResult =
+          `🎯 *Rekomendasi Produk*:\n` +
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          `• Produk: ${item.Goal}\n` +
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          `• Histori 1: ${item.Rule_1}\n` +
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          `• Histori 2: ${item.Rule_2}\n` +
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          `• Histori 3: ${item.Rule_3}\n\n` +
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+          `📌 *Produk Yang Cocok:* _${item.Value.replace(/_/g, ' ').toUpperCase()}_`;
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        await client.sendMessage(from, {
+          text: `📦 *Hasil Analisa Anda*:\n\n${formattedResult}\n\n👉 Ketik *menu* untuk memulai kembali.`,
+        });
+      }
     } else {
       // Final tapi bukan root 1 atau 3 → hanya tutup sesi
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
