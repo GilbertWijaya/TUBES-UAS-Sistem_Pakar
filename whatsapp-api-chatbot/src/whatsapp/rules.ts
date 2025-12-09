@@ -185,7 +185,7 @@ export const rules: Record<string, Rule> = {
   },
   Rekomendasi: {
     message:
-      '💡 Kirimkan preferensi produk, dan kami akan memberikan rekomendasi produk yang sesuai dengan kebutuhan Anda! 😊',
+      '💡 Kirimkan preferensi produk, dan cirinya dengan format "Jenis Produk, Ciri 1, Ciri 2, Ciri 3" / "Dekorasi, Bundling, Latex, Mini"! Kami akan carikan sesuai kebutuhan anda 😊',
     next: [],
     isFinal: true,
   },
