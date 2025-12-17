@@ -7,10 +7,26 @@ interface Session {
   expectingInputForRoot3?: boolean; // FLAG khusus ROOT 3
 }
 
+const AUTO_REPLY_NUMBERS = [
+  // '6282228000422@s.whatsapp.net',
+  '6281217158054@s.whatsapp.net',
+];
+const AUTO_REPLY_MESSAGE =
+  '👋 Terima kasih telah menghubungi kami.\nTunggu sesaat hingga admin membalas pesan kamu.';
+
 const sessions: Record<string, Session> = {};
 
 export async function handleMessage(client: any, from: string, text?: string) {
   if (!text) return;
+
+  // ========= AUTO RESPONSE ONLY =========
+  if (AUTO_REPLY_NUMBERS.includes(from)) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    await client.sendMessage(from, {
+      text: AUTO_REPLY_MESSAGE,
+    });
+    return;
+  }
 
   const cleaned = text.trim().toUpperCase();
 
